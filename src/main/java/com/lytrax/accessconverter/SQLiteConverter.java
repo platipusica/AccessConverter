@@ -138,10 +138,11 @@ public class SQLiteConverter extends Converter {
                 case "BYTE":
                 case "INT":
                 case "LONG":
-                    if(column.isAutoNumber()) {
+                    if(column.isAutoNumber() == true) {
                         sql.append(String.format("`%s` INTEGER PRIMARY KEY AUTOINCREMENT", name));
                     } else {
-                        sql.append(String.format("`%s` INT NOT NULL DEFAULT 0", name));
+                        //sql.append(String.format("`%s` INT NOT NULL DEFAULT 0", name));
+                        sql.append(String.format("`%s` INTEGER", name));
                     }
                     break;
                 case "FLOAT":
@@ -157,10 +158,12 @@ public class SQLiteConverter extends Converter {
                     sql.append(String.format("`%s` DECIMAL(15,4) NOT NULL DEFAULT 0", name));
                     break;
                 case "BOOLEAN":
-                    sql.append(String.format("`%s` TINYINT NOT NULL DEFAULT 0", name));
+                    //sql.append(String.format("`%s` TINYINT NOT NULL DEFAULT 0", name));
+                    sql.append(String.format("`%s` BOOL NOT NULL DEFAULT FALSE", name));
                     break;
                 case "SHORT_DATE_TIME":
-                    sql.append(String.format("`%s` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'", name));
+                    //sql.append(String.format("`%s` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'", name));
+                    sql.append(String.format("`%s` TIMESTAMP", name));
                     break;
                 case "MEMO":
                     sql.append(String.format("`%s` TEXT", name));
