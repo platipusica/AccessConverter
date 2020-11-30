@@ -6,7 +6,7 @@
 
   <groupId>com.lytrax</groupId>
   <artifactId>accessconverter</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.6</version>
+      <version>3.10</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.healthmarketscience.jackcess</groupId>
       <artifactId>jackcess</artifactId>
-      <version>2.1.8</version>
+      <version>3.5.1</version>
     </dependency>
     <dependency>
       <groupId>javax.json</groupId>
@@ -60,5 +60,32 @@
       <version>1.0.1</version>
     </dependency>
   </dependencies>
+  
+	<build>
+	  <plugins>
+	    <plugin>
+	      <artifactId>maven-assembly-plugin</artifactId>
+	      <configuration>
+	        <archive>
+	          <manifest>
+	            <mainClass>com.lytrax.accessconverter.AccessConverter</mainClass>
+	          </manifest>
+	        </archive>
+	        <descriptorRefs>
+	          <descriptorRef>jar-with-dependencies</descriptorRef>
+	        </descriptorRefs>
+	      </configuration>
+	      <executions>
+		    <execution>
+		      <id>make-assembly</id> <!-- this is used for inheritance merges -->
+		      <phase>package</phase> <!-- bind to the packaging phase -->
+		      <goals>
+		        <goal>single</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+	    </plugin>
+	  </plugins>
+	</build>
 
 </project>
