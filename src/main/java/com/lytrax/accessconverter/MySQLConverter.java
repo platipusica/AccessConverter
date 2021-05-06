@@ -5,20 +5,20 @@
  */
 package com.lytrax.accessconverter;
 
-import com.healthmarketscience.jackcess.Column;
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.Row;
-import com.healthmarketscience.jackcess.Table;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.commons.text.TextStringBuilder;
+
+import com.healthmarketscience.jackcess.Column;
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.Row;
+import com.healthmarketscience.jackcess.Table;
 
 /**
  *
@@ -293,9 +293,14 @@ public class MySQLConverter extends Converter {
                             sqlDump.append(row.getBoolean(name) ? 1 : 0);
                             break;
                         case "SHORT_DATE_TIME":
-                            Date d = row.getDate(name);
+                        	/*
+                        	Date d = row.getDate(name);
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             sqlDump.append(String.format("'%s'", format.format(d)));
+                            */
+                            LocalDateTime localDateTime = row.getLocalDateTime(name);
+                            Locale locale = new Locale("en", "US");
+                            sqlDump.append(String.format("'%s'", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", locale) ) ) );
                             break;
                         case "MEMO":
                         case "GUID":

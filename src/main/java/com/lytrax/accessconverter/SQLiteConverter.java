@@ -23,29 +23,31 @@
  */
 package com.lytrax.accessconverter;
 
-import com.healthmarketscience.jackcess.Column;
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.Row;
-import com.healthmarketscience.jackcess.Table;
 import java.io.File;
 import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-import java.util.Set;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-//import org.apache.commons.lang3.text.StrBuilder;
-import org.apache.commons.text.TextStringBuilder;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
+import java.util.Set;
+
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import org.apache.commons.lang3.text.StrBuilder;
+import org.apache.commons.text.TextStringBuilder;
+
+import com.healthmarketscience.jackcess.Column;
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.Row;
+import com.healthmarketscience.jackcess.Table;
 
 
 /**
@@ -134,54 +136,54 @@ public class SQLiteConverter extends Converter {
             else
                 isFirst = false;
             
-            switch(type) {
-                case "BYTE":
-                case "INT":
-                case "LONG":
-                    if(column.isAutoNumber() == true) {
-                        sql.append(String.format("`%s` INTEGER PRIMARY KEY AUTOINCREMENT", name));
-                    } else {
-                        //sql.append(String.format("`%s` INT NOT NULL DEFAULT 0", name));
-                        sql.append(String.format("`%s` INTEGER", name));
-                    }
-                    break;
-                case "FLOAT":
-                    sql.append(String.format("`%s` FLOAT NOT NULL DEFAULT 0", name));
-                    break;
-                case "DOUBLE":
-                    sql.append(String.format("`%s` DOUBLE NOT NULL DEFAULT 0", name));
-                    break;
-                case "NUMERIC":
-                    sql.append(String.format("`%s` DECIMAL(28,0) NOT NULL DEFAULT 0", name));
-                    break;
-                case "MONEY":
-                    sql.append(String.format("`%s` DECIMAL(15,4) NOT NULL DEFAULT 0", name));
-                    break;
-                case "BOOLEAN":
-                    //sql.append(String.format("`%s` TINYINT NOT NULL DEFAULT 0", name));
-                    sql.append(String.format("`%s` BOOL NOT NULL DEFAULT FALSE", name));
-                    break;
-                case "SHORT_DATE_TIME":
-                    //sql.append(String.format("`%s` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'", name));
-                    sql.append(String.format("`%s` TIMESTAMP", name));
-                    break;
-                case "MEMO":
-                    sql.append(String.format("`%s` TEXT", name));
-                    break;
-                case "GUID":
-                    sql.append(String.format("`%s` VARCHAR(50) DEFAULT '{00000000-0000-0000-0000-000000000000}'", name));
-                    break;
-                case "TEXT":
-                    sql.append(String.format("`%s` VARCHAR(255) DEFAULT ''", name));
-                    break;
-                case "OLE":
-                    sql.append(String.format("`%s` BLOB", name));
-                    break;
-                default:
-                    sql.append(String.format("`%s` VARCHAR(255) DEFAULT ''", name));
-                    break;
-            }
+        switch(type) {
+            case "BYTE":
+            case "INT":
+            case "LONG":
+                if(column.isAutoNumber() == true) {
+                    sql.append(String.format("`%s` INTEGER PRIMARY KEY AUTOINCREMENT", name));
+                } else {
+                    //sql.append(String.format("`%s` INT NOT NULL DEFAULT 0", name));
+                    sql.append(String.format("`%s` INTEGER", name));
+                }
+                break;
+            case "FLOAT":
+                sql.append(String.format("`%s` FLOAT NOT NULL DEFAULT 0", name));
+                break;
+            case "DOUBLE":
+                sql.append(String.format("`%s` DOUBLE NOT NULL DEFAULT 0", name));
+                break;
+            case "NUMERIC":
+                sql.append(String.format("`%s` DECIMAL(28,0) NOT NULL DEFAULT 0", name));
+                break;
+            case "MONEY":
+                sql.append(String.format("`%s` DECIMAL(15,4) NOT NULL DEFAULT 0", name));
+                break;
+            case "BOOLEAN":
+                //sql.append(String.format("`%s` TINYINT NOT NULL DEFAULT 0", name));
+                sql.append(String.format("`%s` BOOL NOT NULL DEFAULT FALSE", name));
+                break;
+            case "SHORT_DATE_TIME":
+                //sql.append(String.format("`%s` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'", name));
+                sql.append(String.format("`%s` TIMESTAMP", name));
+                break;
+            case "MEMO":
+                sql.append(String.format("`%s` TEXT", name));
+                break;
+            case "GUID":
+                sql.append(String.format("`%s` VARCHAR(50) DEFAULT '{00000000-0000-0000-0000-000000000000}'", name));
+                break;
+            case "TEXT":
+                sql.append(String.format("`%s` VARCHAR(255) DEFAULT ''", name));
+                break;
+            case "OLE":
+                sql.append(String.format("`%s` BLOB", name));
+                break;
+            default:
+                sql.append(String.format("`%s` VARCHAR(255) DEFAULT ''", name));
+                break;
         }
+    }
         
         sql.append(")");
         
@@ -278,9 +280,14 @@ public class SQLiteConverter extends Converter {
                                 sql.append(row.getBoolean(name) ? 1 : 0);
                                 break;
                             case "SHORT_DATE_TIME":
+                            	/*
                                 Date d = row.getDate(name);
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 sql.append(String.format("'%s'", format.format(d)));
+                                */
+                                LocalDateTime localDateTime = row.getLocalDateTime(name);
+                                Locale locale = new Locale("en", "US");
+                                sql.append(String.format("'%s'", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", locale) ) ) );
                                 break;
                             case "MEMO":
                             case "GUID":

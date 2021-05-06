@@ -6,7 +6,7 @@
 
   <groupId>com.lytrax</groupId>
   <artifactId>accessconverter</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.5</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.6</version>
+      <version>3.10</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.healthmarketscience.jackcess</groupId>
       <artifactId>jackcess</artifactId>
-      <version>2.1.8</version>
+      <version>3.5.1</version>
     </dependency>
     <dependency>
       <groupId>javax.json</groupId>
@@ -60,6 +60,7 @@
       <version>1.0.1</version>
     </dependency>
   </dependencies>
+  
 	<build>
 	  <plugins>
 	    <plugin>

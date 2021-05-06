@@ -23,18 +23,28 @@
  */
 package com.lytrax.accessconverter;
 
-import com.healthmarketscience.jackcess.*;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import javax.json.*;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
+
+import com.healthmarketscience.jackcess.Column;
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.Row;
+import com.healthmarketscience.jackcess.Table;
 
 /**
  *
@@ -174,10 +184,18 @@ public class JSONConverter extends Converter {
             break;
             case "SHORT_DATE_TIME":
                 try {
+                	/*
                     Date d = row.getDate(name);
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd kk:mm:ss");
                     jsonData.add(format.format(d));
-                } catch(Exception e) {
+                    */
+                    
+                    LocalDateTime localDateTime = row.getLocalDateTime(name);
+                    Locale locale = new Locale("en", "US");
+                    jsonData.add(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-mm-dd kk:mm:ss", locale) ) );
+                    
+                } 
+                catch(Exception e) {
                     jsonData.add("");
                 }
             break;
@@ -237,9 +255,16 @@ public class JSONConverter extends Converter {
                     jsonData.add(name, row.getBoolean(name));
                     break;
                 case "SHORT_DATE_TIME":
+                	/*
                     Date d = row.getDate(name);
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     jsonData.add(name, format.format(d));
+                    */
+                    
+                    LocalDateTime localDateTime = row.getLocalDateTime(name);
+                    Locale locale = new Locale("en", "US");
+                    jsonData.add(name, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", locale) ) );
+                    
                     break;
                 case "TEXT":
                 case "MEMO":
