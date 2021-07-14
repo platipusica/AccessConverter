@@ -151,7 +151,7 @@ public class SQLiteConverter extends Converter {
                 sql.append(String.format("`%s` FLOAT NOT NULL DEFAULT 0", name));
                 break;
             case "DOUBLE":
-                sql.append(String.format("`%s` DOUBLE NOT NULL DEFAULT 0", name));
+                sql.append(String.format("`%s` REAL", name));
                 break;
             case "NUMERIC":
                 sql.append(String.format("`%s` DECIMAL(28,0) NOT NULL DEFAULT 0", name));
@@ -161,11 +161,11 @@ public class SQLiteConverter extends Converter {
                 break;
             case "BOOLEAN":
                 //sql.append(String.format("`%s` TINYINT NOT NULL DEFAULT 0", name));
-                sql.append(String.format("`%s` BOOL NOT NULL DEFAULT FALSE", name));
+                sql.append(String.format("`%s` INTEGER NOT NULL DEFAULT FALSE", name));
                 break;
             case "SHORT_DATE_TIME":
                 //sql.append(String.format("`%s` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'", name));
-                sql.append(String.format("`%s` TIMESTAMP", name));
+                sql.append(String.format("`%s` DATETIME", name));
                 break;
             case "MEMO":
                 sql.append(String.format("`%s` TEXT", name));
